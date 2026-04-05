@@ -291,7 +291,30 @@ export default function ExpenseTracker() {
     ]
   }), [stats.trendSorted]);
 
-  const chartOpts = { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false }, tooltip:{ backgroundColor:"rgba(15,15,25,0.95)", padding:12, cornerRadius:8, callbacks:{ label:(ctx)=>`${ctx.label}: ${fmt(ctx.parsed.y??ctx.parsed,false,currency)}` } } }, scales:{ x:{ grid:{ color:"rgba(255,255,255,0.05)" }, ticks:{ color:"rgba(255,255,255,0.5)", font:{size:11} } }, y:{ grid:{ color:"rgba(255,255,255,0.05)" }, ticks:{ color:"rgba(255,255,255,0.5)", font:{size:11}, callback:(v)=>fmt(v,false,currency) } } } };
+  const chartOpts = { 
+    responsive:true, 
+    maintainAspectRatio:false, 
+    plugins:{ 
+      legend:{ display:false }, 
+      tooltip:{ 
+        backgroundColor: dark ? "rgba(15,15,25,0.95)" : "rgba(255,255,255,0.95)",
+        textColor: dark ? "#e8eaf0" : "#0f1220",
+        padding:12, 
+        cornerRadius:8, 
+        callbacks:{ label:(ctx)=>`${ctx.label}: ${fmt(ctx.parsed.y??ctx.parsed,false,currency)}` } 
+      } 
+    }, 
+    scales:{ 
+      x:{ 
+        grid:{ color: dark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.08)" }, 
+        ticks:{ color: dark ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.6)", font:{size:11} } 
+      }, 
+      y:{ 
+        grid:{ color: dark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.08)" }, 
+        ticks:{ color: dark ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.6)", font:{size:11}, callback:(v)=>fmt(v,false,currency) } 
+      } 
+    } 
+  };
 
   // ── Top spending category ──
   const topCat = useMemo(() => {
@@ -509,7 +532,7 @@ export default function ExpenseTracker() {
             <Card title="6-Month Trend">
               {stats.trendSorted.length===0 ? <Empty msg="Not enough data"/> : (
                 <div style={{ height:260 }}>
-                  <Line data={trendData} options={{ ...chartOpts, plugins:{ ...chartOpts.plugins, legend:{ display:true, labels:{ color:"rgba(255,255,255,0.6)", font:{size:11}, boxWidth:10, padding:14 } } }, scales:{ x:{ grid:{color:"rgba(255,255,255,0.04)"}, ticks:{color:"rgba(255,255,255,0.4)",font:{size:11}} }, y:{ grid:{color:"rgba(255,255,255,0.04)"}, ticks:{color:"rgba(255,255,255,0.4)",font:{size:11},callback:v=>fmt(v,false,currency)} } } }}/>
+                  <Line data={trendData} options={{ ...chartOpts, plugins:{ ...chartOpts.plugins, legend:{ display:true, labels:{ color: dark ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.7)", font:{size:11}, boxWidth:10, padding:14 } } }, scales:{ x:{ grid:{color: dark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.06)"}, ticks:{color: dark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.5)",font:{size:11}} }, y:{ grid:{color: dark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.06)"}, ticks:{color: dark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.5)",font:{size:11},callback:v=>fmt(v,false,currency)} } } }}/>
                 </div>
               )}
             </Card>
@@ -521,7 +544,7 @@ export default function ExpenseTracker() {
                   <Bar data={{ labels:stats.trendSorted.map(([k])=>k), datasets:[
                     { label:"Income", data:stats.trendSorted.map(([,v])=>v.income), backgroundColor:"rgba(16,185,129,0.7)", borderRadius:6, borderSkipped:false },
                     { label:"Expense", data:stats.trendSorted.map(([,v])=>v.expense), backgroundColor:"rgba(244,63,94,0.7)", borderRadius:6, borderSkipped:false },
-                  ]}} options={{ ...chartOpts, plugins:{ ...chartOpts.plugins, legend:{ display:true, labels:{ color:"rgba(255,255,255,0.6)", font:{size:11}, boxWidth:10, padding:14 } } } }}/>
+                  ]}} options={{ ...chartOpts, plugins:{ ...chartOpts.plugins, legend:{ display:true, labels:{ color: dark ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.7)", font:{size:11}, boxWidth:10, padding:14 } } }, scales:{ x:{ grid:{color: dark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.06)"}, ticks:{color: dark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.5)",font:{size:11}} }, y:{ grid:{color: dark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.06)"}, ticks:{color: dark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.5)",font:{size:11},callback:(v)=>fmt(v,false,currency)} } } }}/>
                 </div>
               )}
             </Card>
